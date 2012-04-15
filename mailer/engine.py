@@ -77,7 +77,7 @@ def send_all():
             try:
                 if connection is None:
                     connection = get_connection(backend=EMAIL_BACKEND)
-                logging.info("sending message '%s' to %s" % (message.subject, ", ".join(message.to_addresses)))
+                logging.info("sending message '%s' to %s" % (message.subject.encode("utf-8"), ", ".join(message.to_addresses)))
                 email = message.email
                 email.connection = connection
                 email.send()
