@@ -61,10 +61,14 @@ def send_all():
         logging.debug("lock already in place. quitting.")
         return
     except LockTimeout:
-        logging.debug("waiting for the lock timed out. quitting.")
-        return
+        if LOCK_WAIT_TIMEOUT == -1:
+            logging.debug("waiting for the lock timed out. quitting.")
+            return
+        else:
+            logging.debug("killing existing lock because of timeout.")
+            lock.break_lock()
     logging.debug("acquired.")
-    
+
     start_time = time.time()
     
     dont_send = 0
